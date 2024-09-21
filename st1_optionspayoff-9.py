@@ -5,6 +5,7 @@ import plotly.graph_objects as go
 from scipy.stats import norm
 from scipy.optimize import minimize
 
+
 # Set page layout to wide
 st.set_page_config(layout="wide")
 
@@ -83,6 +84,7 @@ st.title('Multi-Leg Options P&L Analyzer')
 # Sidebar Input
 symbol = st.sidebar.text_input('Enter Stock Symbol', 'AAPL', key='symbol_input')
 
+
 # Manage state for stock price and calculated volatility
 if 'stock_price' not in st.session_state:
     st.session_state.stock_price = None
@@ -102,6 +104,7 @@ if symbol:
     
     if not stock_price_history.empty:
         new_stock_price = stock_price_history['Close'].iloc[0]
+        st.sidebar.write(f'Last Price: {round(new_stock_price,2)}')
         if st.session_state.stock_price != new_stock_price:
             st.session_state.stock_price = new_stock_price
             st.session_state.strike_price = float(np.floor(new_stock_price))
@@ -161,7 +164,6 @@ for i in range(legs):
         
     leg_params.append((quantity, buy_sell, option_type, strike_price, expiration_days, risk_free_rate, option_price, op_cost, included))
 
-print(leg_params)
 if st.session_state.stock_price is not None:
     stock_price = st.session_state.stock_price
     N=200
